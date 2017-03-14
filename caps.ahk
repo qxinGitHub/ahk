@@ -15,7 +15,7 @@
 ;软件改造
 ;快捷键分配
 ;ctrl + alt + 9 ;网易云音乐使用 （前进，结合鼠标手势使用）
-;ctrl + alt + 0 ;  （后退***）
+;ctrl + alt + 0 ;  （后退 ---）
 
 ;=====================================================================o
 ;                       CapsLock Initializer                         ;|
@@ -24,14 +24,30 @@ SetCapsLockState, AlwaysOff                                          ;|
 ;---------------------------------------------------------------------o
 ;改变热字符串的结尾字符(下面回车与 Tab 之间有空格结尾字符)去掉了单引号。
 #Hotstring EndChars -()[]{}:;"/\,.?!`n `t
+
 ;改变脚本工作目录,否则它的工作目录是由快捷方式属性中的"起始位置"字段决定
 SetWorkingDir,%A_ScriptDir%
+
 ;激活速率,设定时间内热键最大激活数,超过后弹窗提示
 #HotkeyInterval 2000  ;这里是默认值(毫秒)
 #MaxHotkeysPerInterval 200 ;速率,默认70,默认导致笔记本触摸板多指操作频繁弹窗提示
 
+; 不检查空变量是否为环境变量(官方建议)
+#NoEnv
+
+; 禁用按键历史
+#KeyHistory, 0
+
 ;即使菜单出现问题也不会弹窗提示
 ;Menu, Tray, UseErrorLevel
+
+; 防止线程被定时器中断
+Thread, NoTimers 
+
+; 检测隐藏窗口, 此处打开后,会导致后面无法激活活动窗口,具体原因未知
+; DetectHiddenWindows, On
+; 跳过温和的方式激活窗口
+; #WinActivateForce
 
 ;快捷方式位置
 shortcuts := "C:\shortcuts\"
@@ -116,11 +132,12 @@ SetTimer,timer
 ; #Include, caps_closeYodaoDictAd.ahk
 ;自动切换输入法,被定时器取代
 ;#Include, caps_IME.ahk
-#Include, caps_分号快捷启动.ahk
+#Include, caps_runApp.ahk
 #Include, caps_热字串.ahk
 #Include, caps_软件自定义.ahk
 #Include, caps_快捷键.ahk
 #Include, caps_定时器.ahk
+#Include, caps_candy.ahk ; 2017-03-14 17:27:06 add
 
 
 ;-----------------------------------------------------------------------------

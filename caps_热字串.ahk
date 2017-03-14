@@ -19,8 +19,8 @@ Return
 ::<!::                                                               ;|
 ; text = <!---->                                                       ;|
 ; clipboard = %text%                                                   ;|
-sendbyclip("<!---->")                                                 ;|
-Send {left 3}         ;向左移动鼠标                                ;|
+sendbyclip("<!---->",3)                                                 ;|
+; Send {left 3}         ;向左移动鼠标                                ;|
 Return 
                                                               ;|
 ;   ~~~~~~~~~ print()    hello world! py3也可以愉快的 hello world 了 ;|
@@ -33,12 +33,13 @@ Return
 
 ;;~~~~~~~~~~~~~ console.log()
 :*:/cl::
-sendbyclip("console.log()")                                   ;|
-Send {Left}
+sendbyclip("console.log()",1)                                   ;|
+; Send {Left}
 Return
 
 ;   ~~~~~~~~~~~ mail                                                 ;|
-:*:/wml::                                                              ;|                                       ;|
+:*:/wml::                                                              ;|
+; clipboard =wqxwangyi@163.com                                         ;|
 ; send ^v                                                              ;|
 sendbyclip("新年好啊,新年好")                                     ;|
 Return  
@@ -55,13 +56,13 @@ Return                                                           ;|
 ; text = python3                                                       ;|
 ; clipboard = %text%                                                   ;|
 ; Send ^v{space}
-sendbyclip("python3",,1)                                                 ;|
+sendbyclip("python3",,,1)                                                 ;|
 Return                                                               ;|
 ::/p2::                                                               ;|
 ; text = python2                                                       ;|
 ; clipboard = %text%                                                   ;|
 ; Send ^v{space}
-sendbyclip("python2",,1)                                               ;|
+sendbyclip("python2",,,1)                                               ;|
 Return                                                               ;|
 ;中文字符转换为英
 ::a@::admin@mail.com

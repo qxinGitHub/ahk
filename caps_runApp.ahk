@@ -1,5 +1,6 @@
 ﻿/*
 ; 开始在其他脚本中出现 不再单独为分号快捷启动服务 更名为 runApp
+; 绝大多数直接用系统自带的 run 就可以了
 ;=====================================================================o
 ;                         分号快捷启动                               ;|
 ;-------------------------------o------------------------------------o
@@ -33,7 +34,7 @@ runApp(program,title:="",cmd:=0,arg:="")
         ;判断进程是否已经打开
         If title
         {
-            IfWinExist,% title
+            IfWinExist, %title%
             WinActivate
             Else
             Run %shortcuts%%program%%arg%
@@ -45,7 +46,7 @@ runApp(program,title:="",cmd:=0,arg:="")
     {
         If title
         {
-            IfWinExist,% title
+            IfWinExist,%title%
             WinActivate
             Else
             Run %program%%arg%
@@ -54,6 +55,9 @@ runApp(program,title:="",cmd:=0,arg:="")
             Run %program%%arg%
     }
 }
+
+; ?  即使此热字串在另一个单词中也会被触发;
+; *  不需要终止符 (即空格, 句点或回车) 来触发热字串.
 
 ;计算器
 :?:`;c::
@@ -126,7 +130,7 @@ Return
 
 ;QQ拼音符号输入器
 ;参数传入失败,所以用不同参数创建了两个快捷方式
-::`;zf::
+:?:`;zf::
 runApp("QQPYFace")
 Sleep, 100
 WinActivate, ahk_exe QQPYFace.exe
@@ -155,4 +159,31 @@ Return
 
 :?:`;ps::
 runApp("ps","ahk_exe Photoshop.exe")
+Return
+
+:?:`;q::
+:?:`;qq::
+runApp("TIM","ahk_class TXGuiFoundation")
+Return
+
+; 浏览器
+:?:`;b::
+:*:`;browser::
+:?:`;chrome::
+runApp("chrome","ahk_exe chrome.exe")
+Return
+:?:`;ie::
+runApp("ie","ahk_exe iexplore.exe")
+Return
+
+; oneNote
+:?:`;o::
+:?:`;onenote::
+runApp("onenote","ahk_exe ONENOTE.EXE")
+Return
+
+; github
+:?:`;g::
+:?:`;github::
+runApp("GitHub","ahk_exe GitHub.exe")
 Return

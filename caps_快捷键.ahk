@@ -458,7 +458,7 @@ Send, ^e                                                             ;|
 Send, u                                                              ;|
 Return                                                               ;|
 ;-----------------------------------o                                ;|
-CapsLock & 1:: Run, ScreenToolkit.exe, C:\Programs\autohotkey\plugins, ;Send,+1 ;|
+CapsLock & 1:: Run, ScreenToolkit.exe, C:\Programs\autohotkey\caps\plugins, ;Send,+1 ;|
 CapsLock & 2:: Send,+2                                               ;|
 CapsLock & 3:: Send,+3                                               ;|
 CapsLock & 4:: Send,+4                                               ;|
