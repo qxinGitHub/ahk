@@ -21,27 +21,27 @@ gui, font, s13, Microsoft YaHei
 
 ;第一行
 Gui,Add,Edit,x15 y+20 w70 h30 0X2000 ;Number vt,30 ;0X2000 只能输入数字
-Gui, Add, UpDown,h25 vt 0X80  Range1-1440, 30
-gui,add,text,x+10 yp+2,分钟后
+Gui,Add, UpDown,h25 vt 0X80  Range1-1440, 30
+gui,Add,text,x+10 yp+2,分钟后
 Gui,Add,Button,x+20 yp-2 h28 gst1,关机 (&w)   ;0X8000去掉按钮3d效果改为平面
-Gui,Add,Button,x+5 h28 gPowerSleep1,睡眠 (&e)
+Gui,Add,Button,x+5 h28 gPowerSleep1,休眠 (&e)
 
 ;第二行
-gui,add,edit,x15 y+20 w45 h25
-Gui, Add, UpDown,h25 vh Range0-23, %Hour%
-gui,add,text,x+5 yp+0,时
-gui,add,edit,x+5 yp-0 w45 h25
-Gui, Add, UpDown,h25 vm Range0-59, %A_Min%
-gui,add,text,x+5 yp+0,分
+gui,Add,edit,x15 y+20 w45 h25
+Gui,Add, UpDown,h25 vh Range0-23, %Hour%
+gui,Add,text,x+5 yp+0,时
+gui,Add,edit,x+5 yp-0 w45 h25
+Gui,Add, UpDown,h25 vm Range0-59, %A_Min%
+gui,Add,text,x+5 yp+0,分
 ; gui,add,edit,x+5 yp-5 w50 h25,
 ; Gui, Add, UpDown,h25 vs Range0-59,%A_Sec%
 ; gui,add,text,x+5 yp+5,秒
 Gui,Add,Button,x+15 yp-2 h28 gst2,关机 (&s)
-Gui,Add,Button,x+5 h28 gPowerSleep2,睡眠 (&d)
+Gui,Add,Button,x+5 h28 gPowerSleep2,休眠 (&d)
 
 ;第三行
 Gui,Add,Button,x15 y+20 h28 gst,立即关机 (&x)
-Gui,Add,Button,x+5 h28 gPowerSleep,睡眠 (&c)
+Gui,Add,Button,x+5 h28 gPowerSleep,休眠 (&c)
 Gui,Add,Button,x+5  h28 gCloseGui,取消
 ; Gui, Color, E8E8FF  ;浅绿色
 ; Gui, Color, ffffff ;黑色
@@ -63,8 +63,9 @@ return
 
 PowerSleep1:
 gui,submit
-fun_st1(t,"睡眠")
-DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+fun_st1(t,"休眠")
+; DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+DllCall("PowrProf\SetSuspendState", "int", 1, "int", 0, "int", 0)    ;休眠
 ExitApp
 Return
 
@@ -77,8 +78,9 @@ return
 
 PowerSleep2:
 gui,submit
-fun_st2(h,m,"睡眠")
-DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+fun_st2(h,m,"休眠")
+DllCall("PowrProf\SetSuspendState", "int", 1, "int", 0, "int", 0)    ;休眠
+; DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
 ExitApp
 Return
 
@@ -91,7 +93,8 @@ return
 
 ;睡眠
 PowerSleep:
-DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+DllCall("PowrProf\SetSuspendState", "int", 1, "int", 0, "int", 0)    ;休眠
+; DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)   ;睡眠
 ExitApp
 Return
 

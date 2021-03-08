@@ -1,6 +1,10 @@
 ﻿; candy_lite
 ; 改自妖的 candy ,使其更轻量
 
+candy_start_qxin:
+    Gosub Label_Candy_Start
+    Gosub extension
+    Return
 
 ; 进制转换
 ; 十进制 十六进制转换
@@ -27,8 +31,9 @@ Label_Candy_Start:
     WinGetTitle, Candy_Title,Ahk_ID %Candy_CurWin_id%    ;当前进程的标题
     Candy_Saved_ClipBoard := ClipboardAll
     Clipboard =
-    Send, ^c
+    Send ^c
     ClipWait,0.5
+    Send, {Ctrl Up}   ; 在 edge 浏览器中 会出现 ctrl 没有释放的情况
     If ( ErrorLevel  )          ;如果没有选择到什么东西，则退出
     {
         Clipboard := Candy_Saved_ClipBoard    ;还原粘贴板
@@ -76,17 +81,15 @@ Label_Candy_Start:
   Return
 
 extension:
-  img_ext :="png|jpg|jpeg|gif|tiff|tif|psd|ico"
-  text_ext :="txt|ini|py|html|css|js|ahk|md"
-  if Candy_isFile{
-      if RegExMatch(img_ext, CandySel_Ext){
-        ; MsgBox, 图片`n%CandySel%`n%CandySel_Ext%`n %CandySel_ParentPath%
-        Run, C:\Program Files\Adobe\Adobe Photoshop CC 2015.5\Photoshop.exe %CandySel%
-      }else if RegExMatch(text_ext, CandySel_Ext){
-        ; MsgBox, 文档
-        Run, C:\Program Files\Sublime Text 3\sublime_text.exe %CandySel%
-      }else if Instr(CandySel_Ext, "MultiFiles"){  ;如果是多个文件,则重命名
-            Run C:\Programs\autohotkey\Candy-master\plugins\Bulk Rename Utility\Bulk Rename Utility.exe %CandySel_ParentPath% 
+    img_ext :="png|PNG|jpg|JPG|jpeg|gif|tiff|tif|psd|ico|arw|ARW|bmp"
+    text_ext :="txt|ini|py|html|css|js|ahk|md|json|bat"
+    if Candy_isFile{    ;匹配文件
+        if RegExMatch(img_ext, CandySel_Ext){    ;匹配图片
+            Run, % shortcuts . "ps.lnk "  CandySel
+        }else if RegExMatch(text_ext, CandySel_Ext){    ;匹配文本
+            Run, % shortcuts . "vscode.lnk " . """" . CandySel . """"
+        }else if Instr(CandySel_Ext, "MultiFiles"){     ;如果是多个文件,则重命名
+            Run %A_ScriptDir%\plugins\ReName\ReNamer.exe %CandySel_ParentPath% 
         }else{ ;如果是单文件, 则打开属性
             Send, {alt Down}
             Send, {Enter}
@@ -94,8 +97,8 @@ extension:
         }
 
   }else{
-      ; MsgBox, 文本  ;%CandySel%
-      if RegExMatch(CandySel,"((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+",mUrl){
+        ; MsgBox, 文本  ;%CandySel%
+        if RegExMatch(CandySel,"((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+",mUrl){
             ; todo: 只能匹配第一个  后续的所有均忽略掉
             ;((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+  ;无限匹配 简单粗暴
             ;(https?://)?([\da-z\.-]+)\.([a-z\.]{2,6})([/\w \.-\?]*)*/? ;无法匹配汉字以及一些标点符号
@@ -104,13 +107,13 @@ extension:
             run %mUrl%
         } else if RegExMatch(CandySel, "(0x|#){1}([a-f\d]){6}",mCol){ ;match color 匹配颜色
             ; MsgBox, % mCol
-            mCol := "C:\Programs\autohotkey\plugins\ColorPicker_win.exe " . SubStr(mCol, 2) . "ff"
-            MsgBox, % mCol
+            mCol := "D:\Programs\autohotkey\caps\plugins\ColorPicker_win.exe " . SubStr(mCol, 2) . "ff"
+            ; MsgBox, % mCol
             Run, % mCol
         } else if RegExMatch(CandySel, "\((?P<col1>25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\,(?P<col2>25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\,(?P<col3>25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\)",mCol){
             ; MsgBox, % mCol
             mCol := "ColorPicker_win.exe " . (dec2hex(mColcol1)dec2hex(mColcol2)dec2hex(mColcol3)) . "ff" ; RGB格式的颜色
-            Run, % mCol, C:\Programs\autohotkey\plugins
+            Run, % mCol, D:\Programs\autohotkey\caps\plugins
         }else if RegExMatch(CandySel,"\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}",mMail){
             ; MsgBox, %mEmail% ;邮箱地址
             Clipboard := mMail
@@ -131,6 +134,13 @@ extension:
             ; 统计字符长度
             str := CandySel
             allLen :=StrLen(str)
+
+            ; 如果字符少于6个,则开启搜索功能
+            if(allLen<6){
+                url := "https://www.baidu.com/s?wd=" . str
+                Run, % url
+            }
+
             ; 判断标点符号, 无法识别中文标点符号,序号,罗马符号
             str := RegExReplace(str,"[[:punct:]]",,punctLen)
             ; 排除掉英文字幕,数字   s+ 空白字符

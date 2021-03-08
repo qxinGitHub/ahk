@@ -27,33 +27,19 @@
 ;-----------------------------------o---------------------------------o
 ;任务栏中滚动鼠标中键,实现音量加减,按下为静音                        ;|
 ;--------------------------------------------------------------------;|
-MouseIsOver(WinTitle) {
-MouseGetPos,,, Win
-Return WinExist(WinTitle . " ahk_id " . Win)
-}
+; #If (MouseIsOver("ahk_class Shell_TrayWnd")||MouseIsOver("ahk_class Shell_SecondaryTrayWnd"))
+; WheelUp::Send {Volume_Up}
+; WheelDown::Send {Volume_Down}
+; MButton::Send,{Volume_Mute}
+; #If 
 
-WheelDown::
-If (MouseIsOver("ahk_class Shell_TrayWnd"))
-    ; SoundSet,-3
-    Send {vkAEsc12E}
-Else
-    MouseClick,WD
-Return
+; MouseIsOver(WinTitle) {
+;     MouseGetPos,,, Win
+; 	; ToolTip, %WinTitle%
+;     return WinExist(WinTitle . " ahk_id " . Win)
+; }
 
-WheelUp::
-If (MouseIsOver("ahk_class Shell_TrayWnd"))
-    ; SoundSet,+3
-    Send {vkAFsc130}
-Else
-    MouseClick,WU
-Return
 
-MButton::
-If (MouseIsOver("ahk_class Shell_TrayWnd"))
-    Send,{Volume_Mute}
-Else
-    MouseClick,Middle
-Return
 ;---------------------------------------------------------------------o
 
 ;=====================================================================o
@@ -62,13 +48,13 @@ Return
 ;h j k l 快捷移动  ; 回车  m 关闭                                    ;|
 ;--------------------------------------------------------------------;|
 #IfWinActive ahk_class MultitaskingViewFrame
-h::Up
-j::Right
-k::Left
-l::Down
-`;::Enter
-m::Send, ^w
-Return
+  h::Up
+  j::Right
+  k::Left
+  l::Down
+  `;::Enter
+  m::Send, ^w
+  Return
 #IfWinActive
 ;---------------------------------------------------------------------o
 
@@ -79,25 +65,181 @@ Return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+; ONENOTE -----------------------------------------                ONENOTE
+
+#IfWinActive, ahk_exe ONENOTE.EXE
+; 数字0  清除样式 
+NumpadIns:: Send ^+n
+; 数字1   一级标题
+NumpadEnd:: run, %A_ScriptDir%\script\onenote\快捷键 一级标题.ahk
+; 数字2   二级标题
+NumpadDown:: run, %A_ScriptDir%\script\onenote\快捷键 二级标题.ahk
+; 数字3   三级标题
+NumpadPgDn:: run, %A_ScriptDir%\script\onenote\快捷键 三级标题.ahk
+; 数字4   红色
+NumpadLeft:: run, %A_ScriptDir%\script\onenote\快捷键 字体红色.ahk
+; 数字5   绿色
+NumpadClear:: run, %A_ScriptDir%\script\onenote\快捷键 字体绿色.ahk
+; 数字6   金色
+NumpadRight:: run, %A_ScriptDir%\script\onenote\快捷键 字体金色.ahk
+; 数字7   紫色
+NumpadHome:: run, %A_ScriptDir%\script\onenote\快捷键 字体紫色.ahk
+
+#IfWinActive
+
+
+
+;=====================================================================o
+;                          PR 剪辑                                 |
+;-------------------------------o-------------------------------------o
+; 单独提取出来脚本 pr按钮.ahk
+
+
+
+
+
+
+
+;=====================================================================o
+;                           PS                                 ;|
+;-------------------------------o------------------------------------o
+;                                   ;|
+;--------------------------------------------------------------------;|
+#IfWinActive ahk_exe Photoshop.exe
+  XButton1::send {Enter}
+  XButton2::send {Delete}
+  Return
+
+
+  ; 填充
+  F1::
+    Send, +{F5}
+  Return
+
+  ; 盖印图层
+  F5::
+    Send, ^+!{e}
+  Return
+
+  ; 新建通过拷贝的图层
+  F6::
+    Send, ^{j}
+  Return
+
+  ; 液化
+  F7::
+    Send, +^{x}
+  Return
+
+  ; camera raw 滤镜
+  F8::
+    Send, +^{a}
+  Return
+
+
+  ; 磨皮滤镜
+  F9::
+    MouseClick, , 354, 20
+    MouseClick, , 390, 482
+    MouseClick, , 630, 482
+
+    WinWaitActive  ahk_class #32770    ;磨皮组件
+    Sleep, 2000
+    MouseClick, , 855, 60    ;确定按钮
+    Sleep, 5000
+    ; MsgBox, % A_Cursor
+    ;  Sleep, 3000
+    ; MsgBox, % A_Cursor
+    ; A_Cursor Wait
+    ; while (A_Cursor="Wait")
+    ; {
+    ;  Sleep, 300
+    ; }
+    MouseClick, , 1760, 757
+  Return
+
+  ; F12::
+    Send, {F4}
+    Sleep, 1000
+    Send, {F5}
+
+    ; 等待 cmmera raw 窗口
+    WinWaitActive  ahk_class PSFilter_WindowClass
+
+    Sleep, 500
+
+    ; 使用上一次调色
+    MouseGetPos, posx, posy
+    MouseClick, , 1150, 243
+    Sleep, 300
+    MouseClick, , 1179, 315
+    ; Sleep, 1000
+    ; Send, Enter
+    ; MouseMove, posx, posy, 0
+
+    Sleep, 300
+    ; 关闭调色窗口
+    MouseClick, , 1111, 1120
+
+    WinWaitActive  ahk_class Photoshop
+    Sleep, 300
+    ; 液化窗口
+    Send, {F3}
+    ; 等待 cmmera raw 窗口
+    WinWaitActive  ahk_class PSFilter_WindowClass
+    Sleep, 300
+    MouseClick, , 1766, 292
+    Send, {a}
+  Return
+
+#IfWinActive
+
+  ; ps CRaw 界面
+#IfWinActive ahk_class PSFilter_WindowClass
+  F11::
+    MouseGetPos, posx, posy
+    MouseClick, , 1150, 243
+    Sleep, 300
+    MouseClick, , 1179, 315
+    ; Sleep, 1000
+    ; Send, Enter
+    MouseMove, posx, posy, 0
+  Return
+#IfWinActive
+
+
+;---------------------------------------------------------------------o
+
+
+
+
+;=====================================================================o
+;                          PR 剪辑                                 |
+;-------------------------------o-------------------------------------o
+; 单独提取出来脚本 pr按钮.ahk
+
+
+
+
 ;=====================================================================o
 ;                          网易云音乐                                 |
 ;-------------------------------o-------------------------------------o
 ;鼠标手势，后划，实现后退功能
 #IfWinActive,ahk_exe cloudmusic.exe
-^!+#9::
-MouseGetPos, posx, posy
-;官方推荐使用 click ，相比于 MouseClick 更加简单易用，但此处需要将速度设为0，故用 MouseClick
-;click 204,26
-MouseClick, , 204, 26, , 0
-MouseMove, posx, posy, 0
-Return
+  ^!#9::
+  MouseGetPos, posx, posy
+  ;官方推荐使用 click ，相比于 MouseClick 更加简单易用，但此处需要将速度设为0，故用 MouseClick
+  ;click 204,26
+  MouseClick, , 204, 26, , 0
+  MouseMove, posx, posy, 0
+  Return
 
-^!+#0::
-MouseGetPos, posx, posy
-;click 231,26
-MouseClick, , 231, 26, , 0
-MouseMove, posx, posy, 0
-Return
+  ^!#0::
+  MouseGetPos, posx, posy
+  ;click 231,26
+  MouseClick, , 231, 26, , 0
+  MouseMove, posx, posy, 0
+  Return
 #IfWinActive
 ;---------------------------------------------------------------------o
 
@@ -108,57 +250,57 @@ Return
 ;-------------------------------o-------------------------------------o
 ;历史记录面板的快捷键
 #IfWinActive,ahk_exe clipx.exe
-j::Down
-k::Up
-1::
-MouseGetPos, posx, posy
-MouseClick, , 45, 75, 2, 0
-MouseMove, posx, posy, 0
-Return
-2::
-MouseGetPos, posx, posy
-MouseClick, , 45, 90, 2, 0
-MouseMove, posx, posy, 0
-Return
-3::
-MouseGetPos, posx, posy
-MouseClick, , 45, 103, 2, 0
-MouseMove, posx, posy, 0
-Return
-4::
-MouseGetPos, posx, posy
-MouseClick, , 45, 114, 2, 0
-MouseMove, posx, posy, 0
-Return
-5::
-MouseGetPos, posx, posy
-MouseClick, , 45, 129, 2, 0
-MouseMove, posx, posy, 0
-Return
-6::
-MouseGetPos, posx, posy
-MouseClick, , 45, 141, 2, 0
-MouseMove, posx, posy, 0
-Return
-7::
-MouseGetPos, posx, posy
-MouseClick, , 45, 154, 2, 0
-MouseMove, posx, posy, 0
-Return
-8::
-MouseGetPos, posx, posy
-MouseClick, , 45, 167, 2, 0
-MouseMove, posx, posy, 0
-Return
-9::
-MouseGetPos, posx, posy
-MouseClick, , 45, 182, 2, 0
-MouseMove, posx, posy, 0
-Return
-0::
-MouseGetPos, posx, posy
-MouseClick, , 450, 340, 2, 0
-MouseMove, posx, posy, 0
+  j::Down
+  k::Up
+  1::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 75, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  2::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 90, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  3::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 103, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  4::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 114, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  5::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 129, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  6::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 141, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  7::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 154, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  8::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 167, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  9::
+  MouseGetPos, posx, posy
+  MouseClick, , 45, 182, 2, 0
+  MouseMove, posx, posy, 0
+  Return
+  0::
+  MouseGetPos, posx, posy
+  MouseClick, , 450, 340, 2, 0
+  MouseMove, posx, posy, 0
 Return
 #IfWinActive
 ;---------------------------------------------------------------------o
@@ -179,55 +321,55 @@ Return
 ;Enter : 关闭单词未找到的错误提示
 ; Alt + F4 关闭窗口
 #IfWinActive,ahk_class ImlWinCls
-;上下方向键,鼠标滚轮
-;WheelDown:
-Down::
-Click 790,580
-Return
-;WheelUp:
-Up::
-Click 790,120
-Return
-;左右方向键
-Left::Click 720,80
-Right::Click 760,80
-;home NewSearch搜索  end键 发音
-Home::
-NumpadHome::
-Click 410,77
-Return
-NumpadEnd::
-End::Click 525,80
-Return
-;+-(加减号),增删书签
-=::
-NumpadAdd::
-Click 490,38
-Return
--::
-NumpadSub::
-Click 716,46
-Click 350,340
-Return
-;当出现错误提示时,让回车恢复该有的作用
-Enter::
-;错误提示的颜色标识
-PixelGetColor,lwcolor,272,270,RGB
-IfEqual,lwcolor,0xFFCE00
-Click 400,345
-Else
-Send {Enter}
-Return
-Pgup::
-NumpadPgUp::
-Send {Up}
-Return
-PgDn::
-NumpadPgDn::
-Send {Down}
-Return
-!F4::Click 786,11
-Return
+  ;上下方向键,鼠标滚轮
+  ;WheelDown:
+  Down::
+  Click 790,580
+  Return
+  ;WheelUp:
+  Up::
+  Click 790,120
+  Return
+  ;左右方向键
+  Left::Click 720,80
+  Right::Click 760,80
+  ;home NewSearch搜索  end键 发音
+  Home::
+  NumpadHome::
+  Click 410,77
+  Return
+  NumpadEnd::
+  End::Click 525,80
+  Return
+  ;+-(加减号),增删书签
+  =::
+  NumpadAdd::
+  Click 490,38
+  Return
+  -::
+  NumpadSub::
+  Click 716,46
+  Click 350,340
+  Return
+  ;当出现错误提示时,让回车恢复该有的作用
+  Enter::
+  ;错误提示的颜色标识
+  PixelGetColor,lwcolor,272,270,RGB
+  IfEqual,lwcolor,0xFFCE00
+  Click 400,345
+  Else
+  Send {Enter}
+  Return
+  Pgup::
+  NumpadPgUp::
+  Send {Up}
+  Return
+  PgDn::
+  NumpadPgDn::
+  Send {Down}
+  Return
+  !F4::Click 786,11
+  Return
 #IfWinActive
 ;---------------------------------------------------------------------o
 
