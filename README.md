@@ -1,5 +1,5 @@
 # ahk
-autoHotkey version: v1.1.32.00 
+autoHotkey version: v1.1.32.00  
 windows version: 20H2 19042.804
 
 >自用ahk脚本,备份用
