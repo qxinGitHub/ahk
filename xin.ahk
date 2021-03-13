@@ -108,6 +108,7 @@ GroupAdd,g_en,ahk_exe Adobe Premiere Pro.exe
 GroupAdd,g_en,ahk_exe Photoshop.exe
 GroupAdd,g_en,ahk_exe FSViewer.exe
 GroupAdd,g_en,ahk_exe Code.exe
+GroupAdd,g_en,ahk_exe v2rayN.exe
 
 ;下面的分组已弃用
 GroupAdd,g_ignore,ahk_class MultitaskingViewFrame    ;任务切换

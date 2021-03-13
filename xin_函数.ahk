@@ -88,12 +88,21 @@ displayToast(msg,FontColor:="ffffff",fontSize:=32,time:=-1500,fontFamily:="楷�
     ; 右上位置坐标为X1600 Y50
     Gui,testGui: Show,xcenter y900  NoActivate, Title of Window  ; NoActivate 让当前活动窗口继续保持活动状态.
 
+    ; 第二块显示器(显示位置根据需要单独修改)
+    Gui,testGui2: Destroy
+    Gui,testGui2: +AlwaysOnTop +Disabled -SysMenu  -Caption +Owner  ; +Owner 避免显示任务栏按钮. +LastFound
+    Gui,testGui2:Font,s%fontSize% c%FontColor% bold  ,%fontFamily%
+    Gui,testGui2:Color,272822  ; sublime 底色
+    Gui,testGui2: Add, Text,, %msg%
+    Gui,testGui2: Show,x2400 y1300  NoActivate, Title of Window  ; NoActivate 让当前活动窗口继续保持活动状态.
+
     ;time 负值表示计时器只运行一次
     SetTimer, destroyDisplay,%time%
     Return
 }
 destroyDisplay:
   Gui,testGui:Destroy
+  Gui,testGui2:Destroy
   Return
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
