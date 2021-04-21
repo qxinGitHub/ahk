@@ -1,9 +1,9 @@
 ﻿;======================================================================o
 ;                            个人用脚本 
-; version:  0.1.0
-; lastUpdata: 2021-03-08
+; version:  0.1.2
+; lastUpdata: 2021-04-21
 ;---------------------------------o------------------------------------o
-; AHK版本:    Version v1.1.32.00 
+; AHK版本:    Version v1.1.32.00  1.1.33.06
 ; windows:    20H2 19042.804
 ; 功能:       Caps Lock 快捷键 : 组合为方向键,快捷操作等 
 ;             热字串 : 输入缩写时进行扩展 (自动替换)
@@ -53,7 +53,8 @@ Critical, On
 
 ; 设置工作目录为脚本所在文件夹,,否则它的工作目录是由快捷方式属性中的"起始位置"字段决定，让脚本无条件使用它所在的文件夹作为工作目录
 SetWorkingDir %A_ScriptDir%
-
+; oneDrive 位置
+oneDriveDir := "C:\Users\qxin\OneDrive"
 ;快捷方式位置
 shortcuts := A_ScriptDir . "\shortcuts\"
 
@@ -120,6 +121,24 @@ GroupAdd,g_ignore,ahk_class Windows.UI.Core.CoreWindow    ;开始界面
 SetTimer,timer
 ;------------------------------------------------------------------------------;
 
+;------------------------------------------------------------------------------;
+; 读取一些个人信息, 
+FileEncoding, UTF-8
+fileName := oneDriveDir . "\AHK\info.txt"
+fileInfo := []
+Loop, Read, %fileName%
+{
+	fileInfo.Push(A_LoopReadLine)
+}
+info_winPassword := fileInfo[2]     ;由于脚本是管理员权限, 所以所有通过脚本打开的程序也将是管理员权限, 但是可以通过runas自定义改变
+info_phone := fileInfo[4]
+info_id := fileInfo[6]
+info_googleMail := fileInfo[8]
+info_password := fileInfo[10]
+;------------------------------------------------------------------------------;
+
+
+
 #Include xin_runApp.ahk
 #Include xin_热字串.ahk
 #Include xin_软件自定义.ahk
@@ -140,6 +159,9 @@ SetTimer,timer
 }
 
 ;写些问题
-	;1.所有的定义(变量,分组,创建的菜单),都需要在 Return,热键,热字符串, wait命令等 之前定义,否则无法使用;
+	;1. 所有的定义(变量,分组,创建的菜单),都需要在 Return,热键,热字符串, wait命令等 之前定义,否则无法使用;
 	;2. Wait, WaitClose 之类的程序会每隔100毫秒检查进程一次.所以当此命令处于等待状态时,依旧可以通过热键,自定义菜单项或计时器启动新的进程.但无法正常加载之后的 分组 声明等.
+	;3. 2021-04-21 在使用 RunAs后, 后续的run命令无法运行需要计算的变量, 可以先计算后赋值给变量,然后在运行 run, 变量
+
 	;2021-03-08 最新版的ahk会导致单独按ctrl无法触发热键,已退回v1.1.32.00 
+		;2021-04-21 3月14日的1.1.33.06的版本已经可以单独触发ctrl按键

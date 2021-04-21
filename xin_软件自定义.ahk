@@ -230,14 +230,15 @@ NumpadHome:: run, %A_ScriptDir%\script\onenote\快捷键 字体紫色.ahk
   MouseGetPos, posx, posy
   ;官方推荐使用 click ，相比于 MouseClick 更加简单易用，但此处需要将速度设为0，故用 MouseClick
   ;click 204,26
-  MouseClick, , 204, 26, , 0
+  ; 具体坐标视版本而定
+  MouseClick, , 239, 30, , 0
   MouseMove, posx, posy, 0
   Return
 
   ^!#0::
   MouseGetPos, posx, posy
   ;click 231,26
-  MouseClick, , 231, 26, , 0
+  MouseClick, , 273, 26, , 0
   MouseMove, posx, posy, 0
   Return
 #IfWinActive

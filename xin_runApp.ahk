@@ -28,6 +28,7 @@
 runApp(program,title:="",cmd:=0,arg:="")
 {
     displayToast(program)
+    RunAs, qxin, % info_winPassword 
     ;判断是否需要从环境变量中运行
     If !cmd
     {
@@ -55,6 +56,7 @@ runApp(program,title:="",cmd:=0,arg:="")
         Else
             Run %program%%arg%
     }
+    RunAs
 }
 
 ; ?  即使此热字串在另一个单词中也会被触发;

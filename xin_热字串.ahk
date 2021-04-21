@@ -48,18 +48,22 @@
 ;  mail
 ::/m::
 :*:/ml::
-    sendbyclip("qxguge@gmail.com")
+    sendbyclip(info_googleMail)
     Return
-:*:/wml::
-    sendbyclip("wqxwangyi@163.com")
-    Return
-; 身份证
-; ::/id::
-;     sendbyclip("")
+; :*:/wml::
+;     sendbyclip("@163.com")
 ;     Return
+; 身份证
+::/id::
+    sendbyclip(info_id)
+    Return
 ; 手机号
 ::/p::
     ; sendbyclip("18773822412")
-    sendbyclip("150203096")
+    sendbyclip(info_phone)
+    Return
+; 密码
+::/mm::   
+    sendbyclip(info_password)
     Return
 

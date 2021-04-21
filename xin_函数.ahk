@@ -84,7 +84,6 @@ displayToast(msg,FontColor:="ffffff",fontSize:=32,time:=-1500,fontFamily:="楷�
     Gui,testGui:Font,s%fontSize% c%FontColor% bold  ,%fontFamily%
     Gui,testGui:Color,272822  ; sublime 底色
     Gui,testGui: Add, Text,, %msg%
-
     ; 右上位置坐标为X1600 Y50
     Gui,testGui: Show,xcenter y900  NoActivate, Title of Window  ; NoActivate 让当前活动窗口继续保持活动状态.
 

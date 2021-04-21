@@ -53,7 +53,6 @@ CursorCornerPos(cornerPix = 8)
 				str .= "T"
 			else if ( Y >= MonBottom - cornerPix)
 				str .= "B"
-
 			return % str
 		}
 	}

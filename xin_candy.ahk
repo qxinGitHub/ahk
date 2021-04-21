@@ -87,7 +87,11 @@ extension:
         if RegExMatch(img_ext, CandySel_Ext){    ;匹配图片
             Run, % shortcuts . "ps.lnk "  CandySel
         }else if RegExMatch(text_ext, CandySel_Ext){    ;匹配文本
-            Run, % shortcuts . "vscode.lnk " . """" . CandySel . """"
+            RunAs, qxin, % info_winPassword 
+            ; Run, % shortcuts . "vscode.lnk " . """" . CandySel . """"   ; 这样会报错
+            text_exe:="C:\Users\qxin\AppData\Local\Programs\Microsoft VS Code\Code.exe " . """" . CandySel . """"
+            Run, % text_exe
+            RunAs
         }else if Instr(CandySel_Ext, "MultiFiles"){     ;如果是多个文件,则重命名
             Run %A_ScriptDir%\plugins\ReName\ReNamer.exe %CandySel_ParentPath% 
         }else{ ;如果是单文件, 则打开属性
